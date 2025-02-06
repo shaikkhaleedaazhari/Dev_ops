@@ -16,3 +16,11 @@ ifconfig
 echo "-------------"
 echo "username"
 uname -a
+echo "-------------"
+echo "disk info"
+lsblk
+echo "-------------"
+echo "memory info"
+cat /proc/meminfo
+
+

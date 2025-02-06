@@ -8,4 +8,3 @@ else
     echo "this is odd"
 fi
 
-#entered nuber is banonaice or not

@@ -5,4 +5,4 @@
 
 command="ls -ltr /etc"
 echo "$command"
-eval $command
+eval $command 
