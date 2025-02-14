@@ -8,3 +8,4 @@ print(s.upper().find("B"))
 print(s.split()[0])
 print(s.split()[0:2])
 print(s.index(s[-1]))
+f5= "shaikkha@gmail.com"
