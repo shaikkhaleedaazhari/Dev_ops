@@ -1,7 +1,7 @@
-import smtplib
-import bcrypt
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import smtplib  #Handles sending emails using SMTP
+import bcrypt   #Provides securely stored passwords
+from email.mime.text import MIMEText  
+from email.mime.multipart import MIMEMultipart  #helips to format email mesgs
 
 def get_email_credentials():
     """Get email credentials from the user without hiding the password."""
@@ -22,7 +22,7 @@ def get_email_credentials():
 
 def send_email(sender_email, receiver_email, plain_password, subject, body):
     """Send an email notification."""
-    msg = MIMEMultipart()
+    msg = MIMEMultipart()  #creates am email msg
     msg["From"] = sender_email
     msg["To"] = receiver_email
     msg["Subject"] = subject
@@ -35,7 +35,7 @@ def send_email(sender_email, receiver_email, plain_password, subject, body):
         print("Connecting to SMTP Server...")
 
         server = smtplib.SMTP(smtp_server, smtp_port)
-        server.starttls()
+        server.starttls()  # Upgrades the connection to a secure encrypted one.
         print("Secure Connection Established")
 
         print("Logging in with the provided credentials")
