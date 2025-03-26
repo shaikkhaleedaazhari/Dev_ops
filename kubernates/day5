@@ -1,0 +1,929 @@
+
+hpa:
+
+in kubernates
+3 types of scaling
+1. horizontal pod autoscaling:
+
+        pods in nodes we can auto sacling define min and max pods
+
+2. vertical pod autoscaler
+
+                memeory and cpu limit not recommended
+3. cluster autoscaler
+
+            based on resocirces we can add more nodes also
+
+https://github.com/vilasvarghese/docker-k8s/blob/master/yaml/hpa/Notes.txt
+
+
+
+alias k=kubectl
+
+
+
+scheduling--
+schdule based on
+
+on nodename--on specific
+
+
+node label----schedule node on grp of nodes
+
+
+once we taint--no pod wil go there
+
+what about existing pod??
+it will continue to run--but when get down and comes up then it will not come 
+
+
+https://github.com/vilasvarghese/docker-k8s/tree/master/yaml/scheduling
+
+
+jobs in kube
+
+job---once in a while u want to run like 1 or more 100 also onnce in a while
+
+core job--automatically ru job
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------
+
+
+
+ hostnamectl set-hostname kmaster
+    2  hostname
+    3  cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+    4         overlay
+    5         br_netfilter
+    6         EOF
+    7  cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+    8         overlay
+    9         br_netfilter
+   10         EOF
+   11  cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+   12  overlay
+   13  br_netfilter
+   14  EOF
+   15  sudo modprobe overlay
+   16  sudo modprobe br_netfilter
+   17  cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+   18      net.bridge.bridge-nf-call-iptables  = 1
+   19         net.bridge.bridge-nf-call-ip6tables = 1
+   20         net.ipv4.ip_forward                 = 1
+   21         EOF
+   22  cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+   23  net.bridge.bridge-nf-call-iptables  = 1
+   24  net.bridge.bridge-nf-call-ip6tables = 1
+   25  net.ipv4.ip_forward                 = 1
+   26  EOF
+   27  sudo sysctl --system
+   28  sudo swapoff -a
+   29  (crontab -l 2>/dev/null; echo "@reboot /sbin/swapoff -a") | crontab - || true
+   30  sudo apt-get update -y
+   31  sudo apt-get install -y software-properties-common gpg curl apt-transport-https ca-certificates
+   32  curl -fsSL https://pkgs.k8s.io/addons:/cri-o:/prerelease:/main/deb/Release.key |     gpg --dearmor -o /etc/apt/keyrings/cri-o-apt-keyring.gpg
+   33  echo "deb [signed-by=/etc/apt/keyrings/cri-o-apt-keyring.gpg] https://pkgs.k8s.io/addons:/cri-o:/prerelease:/main/deb/ /" |     tee /etc/apt/sources.list.d/cri-o.list
+   34  sudo apt-get update -y
+   35  sudo apt-get install -y cri-o
+   36  sudo systemctl daemon-reload
+   37  sudo systemctl enable crio --now
+   38  sudo systemctl start crio.service
+   39  systemctl status crio
+   40  VERSION="v1.32.0"
+   41  wget https://github.com/kubernetes-sigs/cri-tools/releases/download/$VERSION/crictl-$VERSION-linux-amd64.tar.gz
+   42  sudo tar zxvf crictl-$VERSION-linux-amd64.tar.gz -C /usr/local/bin
+   43  rm -f crictl-$VERSION-linux-amd64.tar.gz
+   44  KUBERNETES_VERSION=1.32
+   45  sudo mkdir -p /etc/apt/keyrings
+   46  curl -fsSL https://pkgs.k8s.io/core:/stable:/v$KUBERNETES_VERSION/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+   47  echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v$KUBERNETES_VERSION/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+   48  sudo apt-get update -y
+   49  sudo apt-get install -y kubelet kubectl kubeadm
+   50  sudo apt-get install -y kubelet kubeadm kubectl
+   51  hostname
+   52  clear
+   53  hostname
+   54  kubectk get nodes
+   55  kubectl get nodes
+   56  kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+   57  watch -n 1 kubectl get pods kube-system
+   58  kubectl get nodes
+   59  watch -n 1 kubectl get pods kube-system
+   60  watch -n 1 kubectl get pods -n  kube-system
+   61  cealr
+   62  clear
+   63  cd
+   64  kubectl top node
+   65  kubectl top pod
+   66  git clone https://github.com/vilasvarghese/docker-k8s
+   67  cd docker-k8s/
+   68  cd yaml/metricServer/
+   69  ls
+   70  kubectl apply -f metric-server.yaml 
+   71  kubectl top node
+   72  cat metric-server.yaml 
+   73  vi metric-server.yaml 
+   74  kubectl get pods -n kube-system
+   75  vi metric-server.yaml 
+   76  kubectl top pods
+   77  kubectl top node
+   78  kubectl top pod
+   79  kubectl run my --image=nginx
+   80  kubectl top pod
+   81  kubectl get pods
+   82  kubectl top pod
+   83  kubectl get pods -n kube-system
+   84  kubectl get pods
+   85  kubectl top pods
+   86  kubectl top pod
+   87  claer
+   88  clear
+   89  ls
+   90  vi hpa.yaml
+   91  kubectl apply -f hpa.yaml
+   92  cat hpa.yaml 
+   93  vi hpa.yaml
+   94  kubectl apply -f hpa.yaml
+   95  vi hpa.yaml
+   96  ls
+   97  vi deployment.yml
+   98  kubectl apply -f deployment.yml
+   99  vi service.yaml
+  100  vi hpa.yaml 
+  101  kubectl apply -f hpa.yaml
+  102  kubectl top pod
+  103  watch -n 1 kubectl top pod
+  104  kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://hpa-demo-deployment; done"
+  105  kubectl top pod
+  106  clear
+  107  sudo hostnamectl set-hostname kmaster1
+  108  hostname
+  109  clear
+  110  kubeadm init
+  111  export KUBECONFIG=/etc/kubernetes/admin.conf
+  112  clear
+  113  kubectl get nodes
+  114  sudo su
+  115  kubectl top pod
+  116  ls
+  117  kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://hpa-demo-deployment; done"
+  118  clear
+  119  cd 
+  120  cd docker-k8s/
+  121  cd yaml/scheduling/
+  122  ls
+  123  vi ScheduleWithNodeName.yml 
+  124  clear
+  125  cd
+  126  cd docker
+  127  cd docker-k8s/
+  128  cd yaml/scheduling/
+  129  ls
+  130  kubectl apply -f ScheduleWithNodeName.yml 
+  131  kubectl get pods
+  132  kubectl get pods -o wide
+  133  vi ScheduleWithNodeName.yml 
+  134  kubectl apply -f ScheduleWithNodeName.yml 
+  135  alias kubectl =k
+  136  kubectl delete po nginx
+  137  vi ScheduleWithNodeName.yml 
+  138  kubectl apply -f ScheduleWithNodeName.yml 
+  139  kubectl get pods -o wide
+  140  alias k=kubectl
+  141  ls
+  142  vi NodeSelector.yml 
+  143  k apply -f NodeSelector.yml 
+  144  k grt pods
+  145  k get pods
+  146  k delete po cuda-test
+  147  cd 
+  148  cd docker-k8s/
+  149  cd yaml/scheduling/
+  150  ls
+  151  k label nodes kmaster2 disktype=ssd
+  152  k label nodes kmaster2 engineer=khaleeda
+  153  cd 
+  154  clear
+  155  cd docker-k8s/yaml/scheduling/
+  156  ls
+  157  kubectl label nodes kworker1  engineer=khaleeda
+  158  kubectl get pods
+  159  kubectl get pods -o wide
+  160  k apply -f NodeSelector.yml 
+  161  allias k=kubctl
+  162  kubectl apply -f NodeSelector.yml 
+  163  kubectl get pods
+  164  kubectl get pods -o wide
+  165  kubectl describe cuda-test
+  166  kubectl describe pods cuda-test
+  167  kubectl get pods -o wide
+  168* kub
+  169  kubectl get pods -o wide
+  170  kubectl describe node kworker1
+  171* kubectl describe node khaleeda
+  172  kubectl describe nodes  engineer=khaleeda
+  173  kubectl taint node kworker1 app=DBNode:NoSchedule
+  174  kubectl describe node kworker1
+  175  ls
+  176  kubectl apply -f taintsAndTolerations/PodWithTolerations.yaml 
+  177  kubectl get po -o wide
+  178  kubectl describe node kworker1 | grep -i taits
+  179  kubectl describe node kworker1 | grep -i taints
+  180  ls
+  181  cd taintsAndTolerations/
+  182  ls
+  183  vi PodWithTolerations.yaml 
+  184  nano PodWithTolerations.yaml 
+  185  ls
+  186  cat PodWithTolerations.yaml
+  187  rm -rf PodWithTolerations.yaml
+  188  ls
+  189  kubectl apply -f PodWithTolerations.yamlO 
+  190  kubectl get pods
+  191  kubectl get pods -o wide
+  192  kubectl apply -f PodWithTolerations.yamlO 
+  193  nano PodWithTolerations.yamlO 
+  194  clear
+  195  ls
+  196  rm -rf PodWithTolerations.yamlO 
+  197  nano PodWithTolerations.yaml
+  198  kubectl describe node kworker1 | grep -i taints
+  199  nano PodWithTolerations.yaml
+  200  kubectl apply -f PodWithTolerations.yaml 
+  201  kubectl get pods
+  202  kubectl get pods -o wide
+  203  cd ..
+  204  ls
+  205  cd taintsAndTolerations/
+  206  ls
+  207  kubectl taint node kworker2 app=DBNode:NoSchedule
+  208  nano PodWithTolerations.yaml 
+  209  kubectl apply -f PodWithTolerations.yaml 
+  210  kubectl get pods -o wide
+  211  cat PodWithTolerations.yaml 
+  212  nano PodWithTolerations.yaml 
+  213  kubectl apply -f PodWithTolerations.yaml 
+  214  nano PodWithTolerations.yaml 
+  215  kubectl apply -f PodWithTolerations.yaml 
+  216  kubectl get pods
+  217  kubctl delete po nginx
+  218  kubectl delete po nginx
+  219  kubectl apply -f PodWithTolerations.yaml 
+  220  kubectl get pods
+  221  kubectl get pods -o wide
+  222  history
+  223  celar
+  224  clear
+  225  history
+  226* kubectl taint node kworker2 app=
+  227  ls
+  228  kubectl describe node kworker2 | grep -i taint
+  229  ls
+  230  kubectl run one --image=nginx
+  231  kubectl get pods -o wide
+  232  ls
+  233  nano PodWithTolerations.yaml 
+  234  kubectl get pods -o wide
+  235  kubectl delete po one
+  236  kubectl apply -f PodWithTolerations.yaml 
+  237  kubectl get pods -o wide
+  238  nano PodWithTolerations.yaml 
+  239  kubectl delete po nginx
+  240  kubectl apply -f PodWithTolerations.yaml 
+  241  kubectl get pods -o wide
+  242  nano PodWithTolerations.yaml 
+  243  kubectl delete po nginx
+  244  kubectl apply -f PodWithTolerations.yaml 
+  245  kubectl get pods -o wide
+  246  watch -n 1 kubectl get pods -o wide
+  247  kubectl describe pods nginx
+  248  kubectl get pods
+  249  kubectl delete po --all
+  250  kubectl describe node kworker2 | grep -i taint
+  251  nano PodWithTolerations.yaml 
+  252  kubectl describe nodes kworker2 | grep -i taint
+  253  kubectl taint nodes app=shaik:NoExecute-
+  254  kubectl taint node kworker2 app=shaik:NoExecute-
+  255  kubectl taint node kworker2 app=shaik:NoExecute
+  256  kubeadm get pods
+  257  kubectl get pods
+  258  kubectl get deploys
+  259  kubectl get deploy
+  260  kubectl delete deploy hpa-demo-deployment
+  261  clear
+  262  kubectl taint node kworker2 app=shaik:NoExecute
+  263  nano PodWithTolerations.yaml 
+  264  kubectl describe node kworker2 | grep -i taint
+  265  kubectl apply -f PodWithTolerations.yaml 
+  266  nano PodWithTolerations.yaml 
+  267  kubectl apply -f PodWithTolerations.yaml 
+  268  nano PodWithTolerations.yaml 
+  269  kubectl apply -f PodWithTolerations.yaml 
+  270  kubectl get pods
+  271  watch -n 1 kubectl get pods
+  272  kubectl describe pods nginx
+  273  kubectl taint node kworker2 app=DBNode:NoSchedule-
+  274  kubectl get pods
+  275  kubectl describe nodes kmaster2 | grep -i taint
+  276  kubectl describe nodes kworker2 | grep -i taint
+  277  kubectl describe nodes kworker1 | grep -i taint
+  278  kubectl describe nodes kmaster | grep -i taint
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  ------------
+
+
+   hostnamectl set-hostname kmaster
+    2  hostname
+    3  cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+    4         overlay
+    5         br_netfilter
+    6         EOF
+    7  cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+    8         overlay
+    9         br_netfilter
+   10         EOF
+   11  cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+   12  overlay
+   13  br_netfilter
+   14  EOF
+   15  sudo modprobe overlay
+   16  sudo modprobe br_netfilter
+   17  cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+   18      net.bridge.bridge-nf-call-iptables  = 1
+   19         net.bridge.bridge-nf-call-ip6tables = 1
+   20         net.ipv4.ip_forward                 = 1
+   21         EOF
+   22  cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+   23  net.bridge.bridge-nf-call-iptables  = 1
+   24  net.bridge.bridge-nf-call-ip6tables = 1
+   25  net.ipv4.ip_forward                 = 1
+   26  EOF
+   27  sudo sysctl --system
+   28  sudo swapoff -a
+   29  (crontab -l 2>/dev/null; echo "@reboot /sbin/swapoff -a") | crontab - || true
+   30  sudo apt-get update -y
+   31  sudo apt-get install -y software-properties-common gpg curl apt-transport-https ca-certificates
+   32  curl -fsSL https://pkgs.k8s.io/addons:/cri-o:/prerelease:/main/deb/Release.key |     gpg --dearmor -o /etc/apt/keyrings/cri-o-apt-keyring.gpg
+   33  echo "deb [signed-by=/etc/apt/keyrings/cri-o-apt-keyring.gpg] https://pkgs.k8s.io/addons:/cri-o:/prerelease:/main/deb/ /" |     tee /etc/apt/sources.list.d/cri-o.list
+   34  sudo apt-get update -y
+   35  sudo apt-get install -y cri-o
+   36  sudo systemctl daemon-reload
+   37  sudo systemctl enable crio --now
+   38  sudo systemctl start crio.service
+   39  systemctl status crio
+   40  VERSION="v1.32.0"
+   41  wget https://github.com/kubernetes-sigs/cri-tools/releases/download/$VERSION/crictl-$VERSION-linux-amd64.tar.gz
+   42  sudo tar zxvf crictl-$VERSION-linux-amd64.tar.gz -C /usr/local/bin
+   43  rm -f crictl-$VERSION-linux-amd64.tar.gz
+   44  KUBERNETES_VERSION=1.32
+   45  sudo mkdir -p /etc/apt/keyrings
+   46  curl -fsSL https://pkgs.k8s.io/core:/stable:/v$KUBERNETES_VERSION/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+   47  echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v$KUBERNETES_VERSION/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+   48  sudo apt-get update -y
+   49  sudo apt-get install -y kubelet kubectl kubeadm
+   50  sudo apt-get install -y kubelet kubeadm kubectl
+   51  hostname
+   52  clear
+   53  hostname
+   54  kubectk get nodes
+   55  kubectl get nodes
+   56  kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+   57  watch -n 1 kubectl get pods kube-system
+   58  kubectl get nodes
+   59  watch -n 1 kubectl get pods kube-system
+   60  watch -n 1 kubectl get pods -n  kube-system
+   61  cealr
+   62  clear
+   63  cd
+   64  kubectl top node
+   65  kubectl top pod
+   66  git clone https://github.com/vilasvarghese/docker-k8s
+   67  cd docker-k8s/
+   68  cd yaml/metricServer/
+   69  ls
+   70  kubectl apply -f metric-server.yaml 
+   71  kubectl top node
+   72  cat metric-server.yaml 
+   73  vi metric-server.yaml 
+   74  kubectl get pods -n kube-system
+   75  vi metric-server.yaml 
+   76  kubectl top pods
+   77  kubectl top node
+   78  kubectl top pod
+   79  kubectl run my --image=nginx
+   80  kubectl top pod
+   81  kubectl get pods
+   82  kubectl top pod
+   83  kubectl get pods -n kube-system
+   84  kubectl get pods
+   85  kubectl top pods
+   86  kubectl top pod
+   87  claer
+   88  clear
+   89  ls
+   90  vi hpa.yaml
+   91  kubectl apply -f hpa.yaml
+   92  cat hpa.yaml 
+   93  vi hpa.yaml
+   94  kubectl apply -f hpa.yaml
+   95  vi hpa.yaml
+   96  ls
+   97  vi deployment.yml
+   98  kubectl apply -f deployment.yml
+   99  vi service.yaml
+  100  vi hpa.yaml 
+  101  kubectl apply -f hpa.yaml
+  102  kubectl top pod
+  103  watch -n 1 kubectl top pod
+  104  kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://hpa-demo-deployment; done"
+  105  kubectl top pod
+  106  clear
+  107  sudo hostnamectl set-hostname kmaster1
+  108  hostname
+  109  clear
+  110  kubeadm init
+  111  export KUBECONFIG=/etc/kubernetes/admin.conf
+  112  clear
+  113  kubectl get nodes
+  114  sudo su
+  115  kubectl top pod
+  116  ls
+  117  kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://hpa-demo-deployment; done"
+  118  clear
+  119  cd 
+  120  cd docker-k8s/
+  121  cd yaml/scheduling/
+  122  ls
+  123  vi ScheduleWithNodeName.yml 
+  124  clear
+  125  cd
+  126  cd docker
+  127  cd docker-k8s/
+  128  cd yaml/scheduling/
+  129  ls
+  130  kubectl apply -f ScheduleWithNodeName.yml 
+  131  kubectl get pods
+  132  kubectl get pods -o wide
+  133  vi ScheduleWithNodeName.yml 
+  134  kubectl apply -f ScheduleWithNodeName.yml 
+  135  alias kubectl =k
+  136  kubectl delete po nginx
+  137  vi ScheduleWithNodeName.yml 
+  138  kubectl apply -f ScheduleWithNodeName.yml 
+  139  kubectl get pods -o wide
+  140  alias k=kubectl
+  141  ls
+  142  vi NodeSelector.yml 
+  143  k apply -f NodeSelector.yml 
+  144  k grt pods
+  145  k get pods
+  146  k delete po cuda-test
+  147  cd 
+  148  cd docker-k8s/
+  149  cd yaml/scheduling/
+  150  ls
+  151  k label nodes kmaster2 disktype=ssd
+  152  k label nodes kmaster2 engineer=khaleeda
+  153  cd 
+  154  clear
+  155  cd docker-k8s/yaml/scheduling/
+  156  ls
+  157  kubectl label nodes kworker1  engineer=khaleeda
+  158  kubectl get pods
+  159  kubectl get pods -o wide
+  160  k apply -f NodeSelector.yml 
+  161  allias k=kubctl
+  162  kubectl apply -f NodeSelector.yml 
+  163  kubectl get pods
+  164  kubectl get pods -o wide
+  165  kubectl describe cuda-test
+  166  kubectl describe pods cuda-test
+  167  kubectl get pods -o wide
+  168* kub
+  169  kubectl get pods -o wide
+  170  kubectl describe node kworker1
+  171* kubectl describe node khaleeda
+  172  kubectl describe nodes  engineer=khaleeda
+  173  kubectl taint node kworker1 app=DBNode:NoSchedule
+  174  kubectl describe node kworker1
+  175  ls
+  176  kubectl apply -f taintsAndTolerations/PodWithTolerations.yaml 
+  177  kubectl get po -o wide
+  178  kubectl describe node kworker1 | grep -i taits
+  179  kubectl describe node kworker1 | grep -i taints
+  180  ls
+  181  cd taintsAndTolerations/
+  182  ls
+  183  vi PodWithTolerations.yaml 
+  184  nano PodWithTolerations.yaml 
+  185  ls
+  186  cat PodWithTolerations.yaml
+  187  rm -rf PodWithTolerations.yaml
+  188  ls
+  189  kubectl apply -f PodWithTolerations.yamlO 
+  190  kubectl get pods
+  191  kubectl get pods -o wide
+  192  kubectl apply -f PodWithTolerations.yamlO 
+  193  nano PodWithTolerations.yamlO 
+  194  clear
+  195  ls
+  196  rm -rf PodWithTolerations.yamlO 
+  197  nano PodWithTolerations.yaml
+  198  kubectl describe node kworker1 | grep -i taints
+  199  nano PodWithTolerations.yaml
+  200  kubectl apply -f PodWithTolerations.yaml 
+  201  kubectl get pods
+  202  kubectl get pods -o wide
+  203  cd ..
+  204  ls
+  205  cd taintsAndTolerations/
+  206  ls
+  207  kubectl taint node kworker2 app=DBNode:NoSchedule
+  208  nano PodWithTolerations.yaml 
+  209  kubectl apply -f PodWithTolerations.yaml 
+  210  kubectl get pods -o wide
+  211  cat PodWithTolerations.yaml 
+  212  nano PodWithTolerations.yaml 
+  213  kubectl apply -f PodWithTolerations.yaml 
+  214  nano PodWithTolerations.yaml 
+  215  kubectl apply -f PodWithTolerations.yaml 
+  216  kubectl get pods
+  217  kubctl delete po nginx
+  218  kubectl delete po nginx
+  219  kubectl apply -f PodWithTolerations.yaml 
+  220  kubectl get pods
+  221  kubectl get pods -o wide
+  222  history
+  223  celar
+  224  clear
+  225  history
+  226* kubectl taint node kworker2 app=
+  227  ls
+  228  kubectl describe node kworker2 | grep -i taint
+  229  ls
+  230  kubectl run one --image=nginx
+  231  kubectl get pods -o wide
+  232  ls
+  233  nano PodWithTolerations.yaml 
+  234  kubectl get pods -o wide
+  235  kubectl delete po one
+  236  kubectl apply -f PodWithTolerations.yaml 
+  237  kubectl get pods -o wide
+  238  nano PodWithTolerations.yaml 
+  239  kubectl delete po nginx
+  240  kubectl apply -f PodWithTolerations.yaml 
+  241  kubectl get pods -o wide
+  242  nano PodWithTolerations.yaml 
+  243  kubectl delete po nginx
+  244  kubectl apply -f PodWithTolerations.yaml 
+  245  kubectl get pods -o wide
+  246  watch -n 1 kubectl get pods -o wide
+  247  kubectl describe pods nginx
+  248  kubectl get pods
+  249  kubectl delete po --all
+  250  kubectl describe node kworker2 | grep -i taint
+  251  nano PodWithTolerations.yaml 
+  252  kubectl describe nodes kworker2 | grep -i taint
+  253  kubectl taint nodes app=shaik:NoExecute-
+  254  kubectl taint node kworker2 app=shaik:NoExecute-
+  255  kubectl taint node kworker2 app=shaik:NoExecute
+  256  kubeadm get pods
+  257  kubectl get pods
+  258  kubectl get deploys
+  259  kubectl get deploy
+  260  kubectl delete deploy hpa-demo-deployment
+  261  clear
+  262  kubectl taint node kworker2 app=shaik:NoExecute
+  263  nano PodWithTolerations.yaml 
+  264  kubectl describe node kworker2 | grep -i taint
+  265  kubectl apply -f PodWithTolerations.yaml 
+  266  nano PodWithTolerations.yaml 
+  267  kubectl apply -f PodWithTolerations.yaml 
+  268  nano PodWithTolerations.yaml 
+  269  kubectl apply -f PodWithTolerations.yaml 
+  270  kubectl get pods
+  271  watch -n 1 kubectl get pods
+  272  kubectl describe pods nginx
+  273  kubectl taint node kworker2 app=DBNode:NoSchedule-
+  274  kubectl get pods
+  275  kubectl describe nodes kmaster2 | grep -i taint
+  276  kubectl describe nodes kworker2 | grep -i taint
+  277  kubectl describe nodes kworker1 | grep -i taint
+  278  kubectl describe nodes kmaster | grep -i taint
+  279  clear
+  280  ls
+  281  ckear
+  282  clear
+  283  histroy
+  284  history
+root@kmaster1:~/docker-k8s/yaml/scheduling/taintsAndTolerations# cd ..
+root@kmaster1:~/docker-k8s/yaml/scheduling# history
+    1  hostnamectl set-hostname kmaster
+    2  hostname
+    3  cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+    4         overlay
+    5         br_netfilter
+    6         EOF
+    7  cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+    8         overlay
+    9         br_netfilter
+   10         EOF
+   11  cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+   12  overlay
+   13  br_netfilter
+   14  EOF
+   15  sudo modprobe overlay
+   16  sudo modprobe br_netfilter
+   17  cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+   18      net.bridge.bridge-nf-call-iptables  = 1
+   19         net.bridge.bridge-nf-call-ip6tables = 1
+   20         net.ipv4.ip_forward                 = 1
+   21         EOF
+   22  cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+   23  net.bridge.bridge-nf-call-iptables  = 1
+   24  net.bridge.bridge-nf-call-ip6tables = 1
+   25  net.ipv4.ip_forward                 = 1
+   26  EOF
+   27  sudo sysctl --system
+   28  sudo swapoff -a
+   29  (crontab -l 2>/dev/null; echo "@reboot /sbin/swapoff -a") | crontab - || true
+   30  sudo apt-get update -y
+   31  sudo apt-get install -y software-properties-common gpg curl apt-transport-https ca-certificates
+   32  curl -fsSL https://pkgs.k8s.io/addons:/cri-o:/prerelease:/main/deb/Release.key |     gpg --dearmor -o /etc/apt/keyrings/cri-o-apt-keyring.gpg
+   33  echo "deb [signed-by=/etc/apt/keyrings/cri-o-apt-keyring.gpg] https://pkgs.k8s.io/addons:/cri-o:/prerelease:/main/deb/ /" |     tee /etc/apt/sources.list.d/cri-o.list
+   34  sudo apt-get update -y
+   35  sudo apt-get install -y cri-o
+   36  sudo systemctl daemon-reload
+   37  sudo systemctl enable crio --now
+   38  sudo systemctl start crio.service
+   39  systemctl status crio
+   40  VERSION="v1.32.0"
+   41  wget https://github.com/kubernetes-sigs/cri-tools/releases/download/$VERSION/crictl-$VERSION-linux-amd64.tar.gz
+   42  sudo tar zxvf crictl-$VERSION-linux-amd64.tar.gz -C /usr/local/bin
+   43  rm -f crictl-$VERSION-linux-amd64.tar.gz
+   44  KUBERNETES_VERSION=1.32
+   45  sudo mkdir -p /etc/apt/keyrings
+   46  curl -fsSL https://pkgs.k8s.io/core:/stable:/v$KUBERNETES_VERSION/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+   47  echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v$KUBERNETES_VERSION/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+   48  sudo apt-get update -y
+   49  sudo apt-get install -y kubelet kubectl kubeadm
+   50  sudo apt-get install -y kubelet kubeadm kubectl
+   51  hostname
+   52  clear
+   53  hostname
+   54  kubectk get nodes
+   55  kubectl get nodes
+   56  kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+   57  watch -n 1 kubectl get pods kube-system
+   58  kubectl get nodes
+   59  watch -n 1 kubectl get pods kube-system
+   60  watch -n 1 kubectl get pods -n  kube-system
+   61  cealr
+   62  clear
+   63  cd
+   64  kubectl top node
+   65  kubectl top pod
+   66  git clone https://github.com/vilasvarghese/docker-k8s
+   67  cd docker-k8s/
+   68  cd yaml/metricServer/
+   69  ls
+   70  kubectl apply -f metric-server.yaml 
+   71  kubectl top node
+   72  cat metric-server.yaml 
+   73  vi metric-server.yaml 
+   74  kubectl get pods -n kube-system
+   75  vi metric-server.yaml 
+   76  kubectl top pods
+   77  kubectl top node
+   78  kubectl top pod
+   79  kubectl run my --image=nginx
+   80  kubectl top pod
+   81  kubectl get pods
+   82  kubectl top pod
+   83  kubectl get pods -n kube-system
+   84  kubectl get pods
+   85  kubectl top pods
+   86  kubectl top pod
+   87  claer
+   88  clear
+   89  ls
+   90  vi hpa.yaml
+   91  kubectl apply -f hpa.yaml
+   92  cat hpa.yaml 
+   93  vi hpa.yaml
+   94  kubectl apply -f hpa.yaml
+   95  vi hpa.yaml
+   96  ls
+   97  vi deployment.yml
+   98  kubectl apply -f deployment.yml
+   99  vi service.yaml
+  100  vi hpa.yaml 
+  101  kubectl apply -f hpa.yaml
+  102  kubectl top pod
+  103  watch -n 1 kubectl top pod
+  104  kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://hpa-demo-deployment; done"
+  105  kubectl top pod
+  106  clear
+  107  sudo hostnamectl set-hostname kmaster1
+  108  hostname
+  109  clear
+  110  kubeadm init
+  111  export KUBECONFIG=/etc/kubernetes/admin.conf
+  112  clear
+  113  kubectl get nodes
+  114  sudo su
+  115  kubectl top pod
+  116  ls
+  117  kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://hpa-demo-deployment; done"
+  118  clear
+  119  cd 
+  120  cd docker-k8s/
+  121  cd yaml/scheduling/
+  122  ls
+  123  vi ScheduleWithNodeName.yml 
+  124  clear
+  125  cd
+  126  cd docker
+  127  cd docker-k8s/
+  128  cd yaml/scheduling/
+  129  ls
+  130  kubectl apply -f ScheduleWithNodeName.yml 
+  131  kubectl get pods
+  132  kubectl get pods -o wide
+  133  vi ScheduleWithNodeName.yml 
+  134  kubectl apply -f ScheduleWithNodeName.yml 
+  135  alias kubectl =k
+  136  kubectl delete po nginx
+  137  vi ScheduleWithNodeName.yml 
+  138  kubectl apply -f ScheduleWithNodeName.yml 
+  139  kubectl get pods -o wide
+  140  alias k=kubectl
+  141  ls
+  142  vi NodeSelector.yml 
+  143  k apply -f NodeSelector.yml 
+  144  k grt pods
+  145  k get pods
+  146  k delete po cuda-test
+  147  cd 
+  148  cd docker-k8s/
+  149  cd yaml/scheduling/
+  150  ls
+  151  k label nodes kmaster2 disktype=ssd
+  152  k label nodes kmaster2 engineer=khaleeda
+  153  cd 
+  154  clear
+  155  cd docker-k8s/yaml/scheduling/
+  156  ls
+  157  kubectl label nodes kworker1  engineer=khaleeda
+  158  kubectl get pods
+  159  kubectl get pods -o wide
+  160  k apply -f NodeSelector.yml 
+  161  allias k=kubctl
+  162  kubectl apply -f NodeSelector.yml 
+  163  kubectl get pods
+  164  kubectl get pods -o wide
+  165  kubectl describe cuda-test
+  166  kubectl describe pods cuda-test
+  167  kubectl get pods -o wide
+  168* kub
+  169  kubectl get pods -o wide
+  170  kubectl describe node kworker1
+  171* kubectl describe node khaleeda
+  172  kubectl describe nodes  engineer=khaleeda
+  173  kubectl taint node kworker1 app=DBNode:NoSchedule
+  174  kubectl describe node kworker1
+  175  ls
+  176  kubectl apply -f taintsAndTolerations/PodWithTolerations.yaml 
+  177  kubectl get po -o wide
+  178  kubectl describe node kworker1 | grep -i taits
+  179  kubectl describe node kworker1 | grep -i taints
+  180  ls
+  181  cd taintsAndTolerations/
+  182  ls
+  183  vi PodWithTolerations.yaml 
+  184  nano PodWithTolerations.yaml 
+  185  ls
+  186  cat PodWithTolerations.yaml
+  187  rm -rf PodWithTolerations.yaml
+  188  ls
+  189  kubectl apply -f PodWithTolerations.yamlO 
+  190  kubectl get pods
+  191  kubectl get pods -o wide
+  192  kubectl apply -f PodWithTolerations.yamlO 
+  193  nano PodWithTolerations.yamlO 
+  194  clear
+  195  ls
+  196  rm -rf PodWithTolerations.yamlO 
+  197  nano PodWithTolerations.yaml
+  198  kubectl describe node kworker1 | grep -i taints
+  199  nano PodWithTolerations.yaml
+  200  kubectl apply -f PodWithTolerations.yaml 
+  201  kubectl get pods
+  202  kubectl get pods -o wide
+  203  cd ..
+  204  ls
+  205  cd taintsAndTolerations/
+  206  ls
+  207  kubectl taint node kworker2 app=DBNode:NoSchedule
+  208  nano PodWithTolerations.yaml 
+  209  kubectl apply -f PodWithTolerations.yaml 
+  210  kubectl get pods -o wide
+  211  cat PodWithTolerations.yaml 
+  212  nano PodWithTolerations.yaml 
+  213  kubectl apply -f PodWithTolerations.yaml 
+  214  nano PodWithTolerations.yaml 
+  215  kubectl apply -f PodWithTolerations.yaml 
+  216  kubectl get pods
+  217  kubctl delete po nginx
+  218  kubectl delete po nginx
+  219  kubectl apply -f PodWithTolerations.yaml 
+  220  kubectl get pods
+  221  kubectl get pods -o wide
+  222  history
+  223  celar
+  224  clear
+  225  history
+  226* kubectl taint node kworker2 app=
+  227  ls
+  228  kubectl describe node kworker2 | grep -i taint
+  229  ls
+  230  kubectl run one --image=nginx
+  231  kubectl get pods -o wide
+  232  ls
+  233  nano PodWithTolerations.yaml 
+  234  kubectl get pods -o wide
+  235  kubectl delete po one
+  236  kubectl apply -f PodWithTolerations.yaml 
+  237  kubectl get pods -o wide
+  238  nano PodWithTolerations.yaml 
+  239  kubectl delete po nginx
+  240  kubectl apply -f PodWithTolerations.yaml 
+  241  kubectl get pods -o wide
+  242  nano PodWithTolerations.yaml 
+  243  kubectl delete po nginx
+  244  kubectl apply -f PodWithTolerations.yaml 
+  245  kubectl get pods -o wide
+  246  watch -n 1 kubectl get pods -o wide
+  247  kubectl describe pods nginx
+  248  kubectl get pods
+  249  kubectl delete po --all
+  250  kubectl describe node kworker2 | grep -i taint
+  251  nano PodWithTolerations.yaml 
+  252  kubectl describe nodes kworker2 | grep -i taint
+  253  kubectl taint nodes app=shaik:NoExecute-
+  254  kubectl taint node kworker2 app=shaik:NoExecute-
+  255  kubectl taint node kworker2 app=shaik:NoExecute
+  256  kubeadm get pods
+  257  kubectl get pods
+  258  kubectl get deploys
+  259  kubectl get deploy
+  260  kubectl delete deploy hpa-demo-deployment
+  261  clear
+  262  kubectl taint node kworker2 app=shaik:NoExecute
+  263  nano PodWithTolerations.yaml 
+  264  kubectl describe node kworker2 | grep -i taint
+  265  kubectl apply -f PodWithTolerations.yaml 
+  266  nano PodWithTolerations.yaml 
+  267  kubectl apply -f PodWithTolerations.yaml 
+  268  nano PodWithTolerations.yaml 
+  269  kubectl apply -f PodWithTolerations.yaml 
+  270  kubectl get pods
+  271  watch -n 1 kubectl get pods
+  272  kubectl describe pods nginx
+  273  kubectl taint node kworker2 app=DBNode:NoSchedule-
+  274  kubectl get pods
+  275  kubectl describe nodes kmaster2 | grep -i taint
+  276  kubectl describe nodes kworker2 | grep -i taint
+  277  kubectl describe nodes kworker1 | grep -i taint
+  278  kubectl describe nodes kmaster | grep -i taint
+  279  clear
+  280  ls
+  281  ckear
+  282  clear
+  283  histroy
+  284  history
+  285  cd ..

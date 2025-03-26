@@ -1,0 +1,240 @@
+---------------------------------------------------------------------------------
+https://github.com/vilasvarghese/docker-k8s/blob/master/notes/day4
+----------------------------------------------------------------------------------
+
+
+api server--just cred opeartions
+
+---------------------------------------
+Automatic bin packing------
+        
+
+
+-------------------------------------------
+
+archi of kubera 4 for master
+api sever
+shedular
+controller
+etcd
+
+
+
+API SERVER----authentication, autherazation, validaet, talk to etcd (api server talking to etcd)
+when we are asking to create a pod..schedular will do at where it dhould do doneby shedular
+shedular
+pod ---like container
+
+shedular ask etcd---to get best machine and just identify not create the pod(know the cpu.memory assign to pod this info there in etcd)
+
+
+to talk to etcd we need to use api server(only with no api server we cant able to talk etcd )
+
+
+controller---control  all these opearions---(desired state == actual state---ir should ensure all propser running (like manager))---How means etcd have all info..so controller will take info from etcd
+
+etcd --is a nosql databse
+
+
+-------------------------archi for worker
+
+kublete 
+kude proxy
+conatinerd/CRIO/pod
+
+
+apiserver will talk to kublet
+
+apiserver talk with kublet and then kublet will then talk to containerd 
+pods are like running sevice
+
+
+proxy(master also)----will runs on every worker node and understand and have info about all networking about the woker node .
+...
+
+
+
+kubctl get pods
+kubctl get pods -n kube-system
+
+
+to create a pod
+
+
+kubectl run khalee --image nginx
+kubectl get pod (pod got created)
+(its not there beacuse it is eventually coninstencey)
+pending status its showing
+
+
+
+pod is the grp of conatiners
+will try to run one contaienr only..but if some cases like if one depenedent on another then it can be
+all the conatierns in pod are colocated and co sheduled(come at same time),namespaces
+
+
+
+
+
+-------------------------pod--------------------
+kubectl---apiserver(restapi)--(it passes certifictae)
+                     -----------------passess request get post put delete
+                      ------------------------------------now  API SERVER 
+                       ------------------------------------------Authenticate (how like in cerficate having info)
+                                              ----------------------Auterization
+                                               ------------------validate
+                                                ---------------------API SERVER (will update data like podnameimage name in etcd)
+ -----------------------shedular comes (knows aout node...like where it is running worker node)
+
+ ------------------------------controller (will know the state of the pod)
+
+
+
+kublet will know that the pod went down and resart pod
+
+
+what if we delete the pod??
+-----------------------------------------------------------
+what if we delete the pod
+ 
+1️⃣ If the Pod is Part of a Deployment / ReplicaSet
+
+💡 Example: You have a Deployment that ensures 3 replicas of a web app.
+
+When you delete a Pod, Kubernetes immediately replaces it to maintain the desired number of replicas.
+The ReplicaSet controller detects that a Pod is missing and schedules a new Pod on an available node.
+
+2️⃣ If the Pod is Created Manually (Without a Controller)
+
+💡 Example: You manually create a Pod using kubectl run or kubectl apply -f pod.yaml.
+
+If you delete this Pod, it is gone forever because no controller is tracking it.
+Kubernetes does not recreate it automatically.
+
+3️⃣ If the Pod Belongs to a DaemonSet
+
+💡 Example: kube-proxy runs as a DaemonSet.
+
+If you delete a DaemonSet Pod, Kubernetes automatically recreates it on the same node.
+DaemonSets ensure that certain system-level Pods always run on all nodes.
+
+
+kublet and conatinerd not the pods?why
+----------------------------------------
+kublet and conatinerd not the pods
+ kubelet and containerd are not Pods because they are core system processes that run directly on the worker node's operating system, rather than inside Kubernetes-managed containers. Let’s break it down:
+
+1. kubelet 🏗️ (Node Agent)
+It is a system daemon (background service) that runs on the node itself (not inside a Pod).
+Its job is to talk to the API Server and ensure that the right Pods are running on the node.
+It starts and stops Pods but is not managed by Kubernetes itself.
+💡 Why is kubelet not a Pod?
+
+If kubelet were inside a Pod, who would ensure that Pod is running? It would create a chicken-and-egg problem.
+Since kubelet is responsible for running all Pods, it must run outside Kubernetes (as a system process).
+2. containerd 🏗️ (Container Runtime)
+This is the container runtime that actually runs your application containers inside Pods.
+Kubernetes does not run containers directly. Instead, it asks containerd (or another runtime) to do it.
+It follows the Container Runtime Interface (CRI), allowing Kubernetes to support different runtimes like CRI-O or Docker.
+💡 Why is containerd not a Pod?
+
+If containerd were inside a Pod, there would be no way to start the first container.
+Pods need a runtime to create containers, so the runtime must exist outside Kubernetes.
+
+---------------------------------
+insallation documentation
+
+kubeadm--install 
+kubectl--usecommunicate the apiserver
+kublet--run the pod --lime manager --
+
+-------------------------------------
+
+in the pod --docker pause will be there to talk with docker..beacuse kernates have not directly talk
+
+
+WHOLE ARCHITECTURE
+-------------------------------------
+
+1. Control Plane (Master Node)
+This is the brain of Kubernetes. It makes decisions about scheduling, scaling, and managing the cluster.
+
+🟢 Key Components:
+kubectl (Client Tool)
+
+It's not part of the cluster but is used to interact with Kubernetes.
+When you run kubectl apply -f myapp.yaml, it sends commands to the API Server.
+API Server (kube-apiserver) 🏛️
+
+Acts as a "front desk" for all Kubernetes operations.
+It processes requests from kubectl, web UIs, and other Kubernetes components.
+Scheduler (kube-scheduler) 📅
+
+Assigns new Pods to worker nodes based on resource availability.
+It checks CPU, memory, and other constraints before scheduling.
+Controller Manager (kube-controller-manager) 🕹️
+
+
+1. node controller
+2. pod controller
+3. replication controller
+4. job controller
+
+
+Ensures that desired states match actual states.
+Includes multiple controllers like:
+Node Controller (checks if nodes are healthy)
+Replication Controller (ensures desired Pod count)
+Job Controller (manages batch jobs)
+etcd (Database) 📦
+
+Stores all cluster data (configuration, state, secrets).
+It’s a NoSQL key-value store, distributed for high availability.
+2. Worker Nodes (Compute Nodes)
+These are the machines where your applications (Pods) actually run.
+
+🔵 Key Components:
+kubelet (Node Agent) 🤖
+
+Talks to the API Server and ensures the node is running the right containers.
+It starts Pods, restarts failed containers, and reports back to the Master.
+kube-proxy (Network Handler) 🌍
+
+Manages networking between Pods and external traffic.
+It creates routing rules to ensure Pods can talk to each other.
+container runtime (Containerd / CRI-O / Docker) 🏗️
+
+This is responsible for actually running the containers.
+Kubernetes doesn’t run containers directly; it delegates to containerd or another runtime.
+3. What’s inside a Pod?
+A Pod is the smallest unit in Kubernetes.
+It runs one or more containers (often a single app).
+Every Pod has:
+A unique IP address.
+Shared storage (if needed).
+Defined resource limits (CPU, memory).
+Deep Dive into Internals
+Here are some internal processes:
+
+Pod Lifecycle
+
+API Server receives a request (e.g., create a Pod).
+Scheduler assigns it to a node.
+kubelet pulls the container image and starts the Pod.
+kube-proxy manages network rules for communication.
+State Synchronization
+
+Controllers continuously check if actual state = desired state.
+If a Pod crashes, a new one is scheduled automatically.
+Networking
+
+Kubernetes uses CNI plugins (Calico, Flannel) for network policies.
+Pods communicate via a flat network (each Pod gets its own IP).
+Storage
+
+Kubernetes supports persistent volumes (PV/PVC).
+Storage can be cloud-based (AWS EBS, Google Persistent Disk) or local.
+
+
+
+

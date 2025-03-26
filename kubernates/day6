@@ -1,0 +1,401 @@
+user
+group
+service account
+
+
+---
+we can get certificficate from .kube config
+
+
+
+
+certificate----in config
+
+useres--conext
+
+
+~/.kube/config------------------------------we can see user name(kuberantes-admin)
+
+
+we can have group of users also
+group---for collbaration
+
+service account--when u want to access a pod or service then we create serivce account
+
+
+kubectl create rolebinding nginx-sa-readonly \
+  --clusterrole=view \
+  --serviceaccount=default:nginx-serviceaccount \ ------default is namespace for that service account
+  --namespace=default
+
+
+
+
+  how to inject config in to pod
+
+    env -static
+  volume---dynamic
+
+  secreates----are encoded -alg bases sos anyone can decrypt it
+  configmap----is not encoded
+
+
+kubectl create secret generic test --from 
+  231  echo "admin"> username.txt
+  232  echo "password" >password.txt
+  233  cat username.txt 
+  234  cat password.txt 
+  235  kubectl create secret generic test --from-file=./username.txt --from-file=./password.txt 
+  236  kubectl get secreats
+  237  kubectl get secrets
+  238  kubectl describe secret test
+  239  histroy
+  240  history
+
+
+
+  ------
+  241  cat secrets.yaml
+  242  echo -n 'admin'|base64
+  243  ls
+  244  kubectl apply -f secrets.yaml 
+  245  kubectl get secrets
+  246  kubectl get secret test -o yaml >exs.yaml
+  247  cat exs.yaml 
+  248  echo YWRtaW4K=|base64 -decode
+  249* echo YWRtaW4K=|base64 -decode
+  250  echo -n 'YWRtaW4K'|base64 -decode 
+  251  celar
+  252  clear
+  253  echo YWRtaW4K|base64 -decode
+  254  echo YWRtaW4K | base64 --decode
+  255  ls
+  256  kubectl apply -f secrets-env-pod.yaml 
+  257  kubectl get pods
+  258  kubectl exec -it secret-env-pod  -- bin/bash
+  259  kubectl exec -it secret-env-pod  -- /bin/bash
+  260  history
+
+----------------------
+
+
+
+ 1  hostnamectl set-hostname kmaster
+    2  hostname
+    3  cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+    4         overlay
+    5         br_netfilter
+    6         EOF
+    7  cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+    8         overlay
+    9         br_netfilter
+   10         EOF
+   11  cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+   12  overlay
+   13  br_netfilter
+   14  EOF
+   15  sudo modprobe overlay
+   16  sudo modprobe br_netfilter
+   17  cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+   18      net.bridge.bridge-nf-call-iptables  = 1
+   19         net.bridge.bridge-nf-call-ip6tables = 1
+   20         net.ipv4.ip_forward                 = 1
+   21         EOF
+   22  cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+   23  net.bridge.bridge-nf-call-iptables  = 1
+   24  net.bridge.bridge-nf-call-ip6tables = 1
+   25  net.ipv4.ip_forward                 = 1
+   26  EOF
+   27  sudo sysctl --system
+   28  sudo swapoff -a
+   29  (crontab -l 2>/dev/null; echo "@reboot /sbin/swapoff -a") | crontab - || true
+   30  sudo apt-get update -y
+   31  sudo apt-get install -y software-properties-common gpg curl apt-transport-https ca-certificates
+   32  curl -fsSL https://pkgs.k8s.io/addons:/cri-o:/prerelease:/main/deb/Release.key |     gpg --dearmor -o /etc/apt/keyrings/cri-o-apt-keyring.gpg
+   33  echo "deb [signed-by=/etc/apt/keyrings/cri-o-apt-keyring.gpg] https://pkgs.k8s.io/addons:/cri-o:/prerelease:/main/deb/ /" |     tee /etc/apt/sources.list.d/cri-o.list
+   34  sudo apt-get update -y
+   35  sudo apt-get install -y cri-o
+   36  sudo systemctl daemon-reload
+   37  sudo systemctl enable crio --now
+   38  sudo systemctl start crio.service
+   39  systemctl status crio
+   40  VERSION="v1.32.0"
+   41  wget https://github.com/kubernetes-sigs/cri-tools/releases/download/$VERSION/crictl-$VERSION-linux-amd64.tar.gz
+   42  sudo tar zxvf crictl-$VERSION-linux-amd64.tar.gz -C /usr/local/bin
+   43  rm -f crictl-$VERSION-linux-amd64.tar.gz
+   44  KUBERNETES_VERSION=1.32
+   45  sudo mkdir -p /etc/apt/keyrings
+   46  curl -fsSL https://pkgs.k8s.io/core:/stable:/v$KUBERNETES_VERSION/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+   47  echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v$KUBERNETES_VERSION/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+   48  sudo apt-get update -y
+   49  sudo apt-get install -y kubelet kubectl kubeadm
+   50  sudo apt-get install -y kubelet kubeadm kubectl
+   51  cd /home/ubuntu/
+   52  cd docker-k8s/yaml/rbac/
+   53  ls
+   54  kubectl apply -f namespaces.yaml 
+   55  ls
+   56  kubectl get ns
+   57  kubectl config view
+   58           kubectl config get-contexts
+   59           kubectl config set-credentials ${MAGIC_USER}@kubernetes --client-certificate=$HOME/.certs/${MAGIC_USER}.crt --client-key=$HOME/.certs/${MAGIC_USER}.key --embed-certs=true
+   60  kubectl config set-credentials ${MAGIC_USER}@kubernetes --client-certificate=$HOME/.certs/${MAGIC_USER}.crt --client-key=$HOME/.certs/${MAGIC_USER}.key --embed-certs=true
+   61  echo $MAGIC_USER
+   62   export MAGIC_USER=dicktracy
+   63           openssl req -new -key dicktracy.key -out dicktracy.csr -subj "/CN=${MAGIC_USER}/O=devs/O=tech-leads"
+   64  clear
+   65  ls
+   66  $ echo MAGIC_USER
+   67  $ echo $MAGIC_USER
+   68  echo $MAGIC_USER
+   69  openssl req -new -key dicktracy.key -out dicktracy.csr -subj "/CN=${MAGIC_USER}/O=devs/O=tech-leads"
+   70  cd 
+   71  ls
+   72           sudo openssl x509 -req -in dicktracy.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out dicktracy.crt -days 500
+   73  ls
+   74           mkdir -p $HOME/.certs && mv dicktracy.crt dicktracy.key $HOME/.certs
+   75  clear
+   76  mkdir -p $HOME/.certs && mv dicktracy.crt dicktracy.key $HOME/.certs
+   77  ls
+   78           sudo openssl x509 -req -in dicktracy.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out dicktracy.crt -days 500
+   79  ls
+   80  mkdir -p $HOME/.certs && mv dicktracy.crt dicktracy.key $HOME/.certs
+   81  openssl req -newkey rsa:2048 -nodes -keyout /root/.certs/${MAGIC_USER}.key -x509 -days 365 -out /root/.certs/${MAGIC_USER}.crt
+   82  clear
+   83  ls
+   84           sudo openssl x509 -req -in dicktracy.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out dicktracy.crt -days 500
+   85  ls
+   86           mkdir -p $HOME/.certs && mv dicktracy.crt dicktracy.key $HOME/.certs
+   87  ls -a
+   88  openssl genrsa -out dicktracy.key 2048
+   89  ~
+   90  openssl genrsa -out dicktracy.key 2048
+   91  ls
+   92           openssl req -new -key dicktracy.key -out dicktracy.csr -subj "/CN=${MAGIC_USER}/O=devs/O=tech-leads"
+   93           sudo openssl x509 -req -in dicktracy.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out dicktracy.crt -days 500
+   94  ls
+   95           mkdir -p $HOME/.certs && mv dicktracy.crt dicktracy.key $HOME/.certs
+   96  cd /home/ubuntu/docker-k8s/yaml/
+   97  ls
+   98  cd rbac/
+   99  ls
+  100  kubectl apply -f namespaces.yaml 
+  101  kubectl get ns
+  102  kubectl config view
+  103           kubectl config get-contexts
+  104           kubectl config set-credentials ${MAGIC_USER}@kubernetes --client-certificate=$HOME/.certs/${MAGIC_USER}.crt --client-key=$HOME/.certs/${MAGIC_USER}.key --embed-certs=true
+  105  cat $HOME/.kube
+  106  clear
+  107  kubectl config get-contexts
+  108           kubectl config set-context ${MAGIC_USER}@kubernetes --cluster=kubernetes --user=${MAGIC_USER}@kubernetes
+  109  kubectl config view
+  110  kubectl config get-contexts
+  111  kubectl apply -f pod-reader.yaml
+  112   kubectl apply -f user-pod-reader-rolebinding.yaml
+  113  ls
+  114  vi user-pod-reader-rolebinding.yaml 
+  115   kubectl apply -f user-pod-reader-rolebinding.yaml
+  116  kubectl get pods
+  117  kubectl get ns -n 
+  118  kubectl get ns
+  119  kubectl get pods
+  120  kubectl nodes kmaster | grep -i taint
+  121  kubectl get nodes kmaster | grep -i taint
+  122  kubectl describe node kmaster | grep -i taint
+  123  kubectl taint nodes kmaster node-role.kubernetes.io/control-plane:NoSchedule-
+  124  kubectl get pods
+  125  kubectl get pods -n test
+  126  kubectl describe node kmaster | grep -i taint
+  127           kubectl config use-context ${MAGIC_USER}@kubernetes
+  128  kubectl get pods -n test
+  129  kubectl run my --image=nginx -n test
+  130  kubectl config use-context kubernetes-admin@kubernetes
+  131   k auth can-i list pods -n test --as dicktracy@kubernetes
+  132   kubectl  auth can-i list pods -n test --as dicktracy@kubernetes
+  133   kubectl auth can-i list pods -n test --as dicktracy@kubernetes
+  134  celar
+  135  clear
+  136  kubectl apply simple-dev-role.yaml 
+  137  kubectl apply -f simple-dev-role.yaml 
+  138  cat simple-dev-role.yaml 
+  139  vi simple-dev-role.yaml 
+  140  kubectl apply -f simple-dev-role.yaml 
+  141  kubectl get roles -n devs
+  142  kubectl apply -f simple-dev-rolebinding.yaml 
+  143  cat simple-dev-rolebinding.yaml 
+  144  kubectl config use-contextx dictracy 
+  145  kubectl config use-contextx dictracy@kubernetes 
+  146  kubectl config use-context dictracy@kubernetes 
+  147  kubectl config use-context dicktracy@kubernetes 
+  148  kubectl run my --image=nginx -n dev
+  149  kubectl run my --image=nginx -n devs
+  150  kubectl get pods -n devs
+  151  kubectl config view
+  152           kubectl config get-contexts
+  153  cat pod-reader.yaml 
+  154  ls
+  155  cat user-pod-reader-rolebinding.yaml 
+  156  kubectl get roles -n test
+  157           kubectl config use-context kubernetes-admin@kubernetes
+  158  kubectl get roles -n test
+  159   export MAGIC_USER=dicktracy
+  160  show env
+  161  dicktracy
+  162  $dicktracy
+  163  echo $MAGIC_USER
+  164  celar
+  165  clear
+  166  openssl genrsa -out dicktracy.key 2048
+  167  ls
+  168  cat dicktracy.key 
+  169  clear
+  170           openssl req -new -key dicktracy.key -out dicktracy.csr -subj "/CN=${MAGIC_USER}/O=devs/O=tech-leads"
+  171  ls
+  172  cat dicktracy.csr 
+  173  ls -ltr /etc/kubernetes/pki
+  174  ~
+  175  ls -ltr /etc/kubernetes/pki
+  176           sudo openssl x509 -req -in dicktracy.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out dicktracy.crt -days 500
+  177  ls
+  178  cat dicktracy.crt
+  179           mkdir -p $HOME/.certs && mv dicktracy.crt dicktracy.key $HOME/.certs
+  180  ls -lh $HOME/.certs
+  181  sudo su
+  182  clear
+  183  ls
+  184  clear
+  185  kubectl get nodes
+  186  clear
+  187  git clone https://github.com/vilasvarghese/docker-k8s
+  188  ls
+  189  cd docker-k8s/yaml/rbac/
+  190  ls
+  191  cd ../ ..
+  192  cd
+  193  sudo su
+  194  clear
+  195  hostnamectl set-hostname kmaster
+  196  hostname
+  197  kubeadm init
+  198  mkdir -p $HOME/.kube
+  199  export KUBECONFIG=/etc/kubernetes/admin.conf
+  200  celar
+  201  clear
+  202  hostname
+  203  sudo su
+  204  celar
+  205  clear
+  206  cd docker-k8s/yaml/services
+  207  ls
+  208  cd ..
+  209  cd serviceAccount/
+  210  kubectl create deployment nginx1 --image=nginx
+  211  kubectl get pods
+  212  kubectl describe pod nginx1
+  213  kubectl exec -it nginx1 -- /bin/bash
+  214  kubectl exec -it nginx1-b7c99b5c8-gwwzb  -- /bin/bash
+  215  kubectl get pods
+  216  export APISERVER=https://kubernetes.default.svc
+  217  export SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
+  218  export TOKEN=$(cat ${SERVICEACCOUNT}/token)
+  219  export TOKEN=$(cat ${SERVICEACCOUNT}/token)
+  220  export SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
+  221  export TOKEN=$(cat ${SERVICEACCOUNT}/token)
+  222  kubectl exec -it nginx1-b7c99b5c8-gwwzb  -- /bin/bash
+  223  kubectl create rolebinding nginx-sa-readonly   --clusterrole=view   --serviceaccount=default:nginx-serviceaccount   --namespace=default
+  224  kubectl apply -f dep.yaml
+  225  kubectl get pods
+  226  kubectl exec -it nginx-deployment-78f76d5775-jzl5c -- bin/bash
+  227  clear
+  228  cd docker-k8s/yaml/secrets
+  229  ls
+  230  kubectl create secret generic test --from 
+  231  echo "admin"> username.txt
+  232  echo "password" >password.txt
+  233  cat username.txt 
+  234  cat password.txt 
+  235  kubectl create secret generic test --from-file=./username.txt --from-file=./password.txt 
+  236  kubectl get secreats
+  237  kubectl get secrets
+  238  kubectl describe secret test
+  239  histroy
+  240  history
+  241  cat secrets.yaml
+  242  echo -n 'admin'|base64
+  243  ls
+  244  kubectl apply -f secrets.yaml 
+  245  kubectl get secrets
+  246  kubectl get secret test -o yaml >exs.yaml
+  247  cat exs.yaml 
+  248  echo YWRtaW4K=|base64 -decode
+  249  echo YWRtaW4K=|base64 -decode
+  250  echo -n 'YWRtaW4K'|base64 -decode 
+  251  celar
+  252  clear
+  253  echo YWRtaW4K|base64 -decode
+  254  echo YWRtaW4K | base64 --decode
+  255  ls
+  256  kubectl apply -f secrets-env-pod.yaml 
+  257  kubectl get pods
+  258  kubectl exec -it secret-env-pod  -- bin/bash
+  259  kubectl exec -it secret-env-pod  -- /bin/bash
+  260  history
+  261  ls
+  262  cat secrets-use.yaml 
+  263  kubectl apply -f secrets-use.yaml 
+  264  kubectl get pods
+  265  kubectl exec -it mysecret-pod -- /bin/bash
+  266  cd ..
+  267  ls
+  268  cd configmap/
+  269  ls
+  270  cd simple/
+  271  kubectl apply -f configmap.yml 
+  272  kubectl get cm
+  273  kubectl get po
+  274  sudo su
+  275  cealr
+  276  clear
+  277  cd home/
+  278  ls
+  279  cd /home/
+  280  ls
+  281  cd ubuntu/
+  282  clear
+  283  cd docker-k8s/yaml/configmap/
+  284  ls
+  285  cd simple
+  286  ls
+  287  cd ..
+  288  clear
+  289  cd /home/ubuntu/
+  290  cd docker-k8s/yaml/
+  291  ls
+  292  cd volumes/
+  293  ls
+  294  cat empty-dir.yaml 
+  295  clear
+  296  kubectl get pods
+  297  ls
+  298  kubectl apply -f empty-dir.yaml 
+  299  kubectl get pods
+  300  kubectl exec -it my-empty-dir -- /bin/bash
+  301  kubectl exec -it my-empty-dir -c test-container-1 -- /bin/bash
+  302  kubectl exec -it my-empty-dir -c test-container-1 -- /bin/sh
+  303  clear
+  304  ls
+  305  cat host-path.yaml 
+  306  kubectl apply -f host-path.yaml 
+  307  kubectl get pods
+  308  kubectl exec -it redis-hostpath -- /bin/bash
+  309  history
+
+
+
+
+
+
+
+  ------------
+
+  persistance volume

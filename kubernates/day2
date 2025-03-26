@@ -1,0 +1,37 @@
+kubectl apply -f
+kubectl delete -f calico 
+kubectl delete pod podname
+kubectl get obj obj name(kubectl get pod podname)
+kubectl describe ibj obj_name
+kubectl api-resources (help)
+
+
+see the yaml file and understand
+
+
+calico
+patch
+
+delete pod i will come up like system pods and by using replica we can see
+
+Rolling Update
+A Rolling Update is a deployment strategy that gradually replaces old pods with new ones without downtime.
+
+
+Rollout
+A Rollout refers to the process of deploying a new version of an application using Kubernetes Deployment. It tracks the history of deployments and allows rollback if needed.
+
+
+✅ Track Deployment History
+✅ Rollback to a Stable Version
+✅ Pause and Resume Updates
+
+
+
+dry ruclient side --n:
+
+Validates locally, does not contact API server.
+
+Server-side dry run
+
+Sends request to API server but does not apply changes.

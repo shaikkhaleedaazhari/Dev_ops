@@ -1,0 +1,88 @@
+cluster ip--talk to one of the pod
+for example we are talking from oid to another machine pod we acn dod that but we cant do
+why
+beacuse when pod goes down and replica restart it the ip chnages now can cant talkhere
+cluster ip come into pic here we talk to clusterip and internally it will talk to the pod
+(it should be in the same cluster)
+
+
+nodepod--when ur cutomers
+nodepod create customerip internally
+nodepod reserve port in host machine 
+
+nodeport--when ur cutomers kubenates automatically check which port is free and assign to the port and internally connect to
+cluster ip and then to the pod
+
+
+service works mainly on labels
+    show-labels
+
+
+service mainly used to manage the dynamic ip with using the cluster ip
+so in the ervice yaml file the label name is same as the name of the deploy label name
+and when we are using tomact all other those we have to put the target port also
+
+
+3 types of ervices
+clusterip
+nodeport
+load balancer---used to get the public ip
+coredns
+
+
+to create and get insode the pod
+
+kubectl run -it newpod --image=busybox -- /bin/sh
+
+wget and the name we can give
+
+dns can work with pods
+
+dns not working with host
+
+cat etc/resolv.conf----who is the dns server it will check
+in this name server is presnt and name server return to etc/resolv .conf file
+
+we cant hard coded the ip beacuse if one machine caraches even we are woking with the cluster ip
+so another machine we cant ensure its having same ip
+so we are giving the dns name
+so that the name is fixed
+
+
+
+histio---service mesh
+
+
+
+
+kubectl get po -o wide
+
+ 224 kubectl get svc
+
+ 225 curl 10.107.150.80
+
+ 226 kubectl get pod -o wide
+
+ 227 curl prashanth-7885c78b48-zrm4m
+
+ 228 kubectl get svc
+
+ 229 curl 10.107.150.80
+
+ 230 curl prashanth
+
+ 231 kubectl run newpod --image=busybox -- /bin/sh
+
+ 232 kubectl run -it newpod1 --image=busybox -- /bin/sh
+
+ 233 kubectl get svc -n kube-system
+
+ 234 kubectl describe svc kube-dns
+
+ 235 kubectl describe svc kube-dns -n kube-system
+
+ 236 kubectl get pod -l k8s-app=kube-dns
+
+ 237 kubectl get pod -l k8s-app=kube-dns -n kube-system
+
+ 238 cat /etc/resolv.conf

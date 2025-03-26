@@ -1,0 +1,53 @@
+pod affinity
+node affnity:
+
+
+-A
+
+toleration
+
+ps-ef
+
+
+------
+relica set---we can define 0 also
+
+
+
+deployemnt stragey------recreate
+-----
+
+recreate--remove all pods and create the pods..
+
+
+-------------
+
+deployment--
+workflow ----more deeply
+
+dns service ip address--hostmachine---etc/config.file-----
+
+serive communication:
+
+
+
+dns----when we request like google.com dnsserver coredns whichnis having fixed ip of coredns which will in resolve.cong....coredns will give serivceip(cluster ip)...
+when ever there is commnuication with  that service ip then kube proxy will have assosiated with that service ip and will forward the request to the pod which is running that service...
+
+
+beacuse if ip table routr---kube proxy will know the service ip beacuse if ip table route
+from service ip---pod 
+
+see the 4 netwrking model------------
+
+
+nodeport --will not for external service
+
+
+eks--in aws kuberantes
+
+we create load balancer and we create n number of in gress reules
+
+we are cnot creating load balacer for every service---if u create load balacner foer every service its like amazon login/  -amazon.cart--we dont want that
+..
+

@@ -1,0 +1,46 @@
+demean set--to create one pod in all nodes
+
+with demean set we can do that
+
+statefulset --- database master passive 1 and passscive 2 ..only talkt o master if it craches then ppsssove 1
+always talk to master and if master craches then passive 1 and passive 2 talk to each other
+
+replica set
+What is a ReplicaSet?
+A ReplicaSet (RS) is a Kubernetes controller that ensures a specified number of identical pods are always running. It automatically replaces failed or deleted pods and supports scaling based on demand.
+
+
+
+
+ What is a ReplicationController?
+A ReplicationController (RC) is an older Kubernetes controller that also ensures a specified number of pod replicas are always running. It was replaced by ReplicaSet because of its limited selector support.
+
+
+Uses apiVersion: v1 instead of apps/v1.
+selector uses equality-based matching (no advanced selection options).
+
+
+
+
+
+expose --directly make it as service
+
+
+
+to careate namesapce
+assoaiste with pod like that
+
+
+to comminicate two different name spaces
+
+dns only resolve the service label not the pod label
+
+
+----------
+cni plugins
+
+
+
+kubeadm init
+
+static pods
