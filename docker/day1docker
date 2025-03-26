@@ -1,0 +1,182 @@
+------------------------------
+https://github.com/vilasvarghese/docker-k8s/tree/master/notes/day3
+-----------------------------
+
+
+
+
+
+
+
+
+
+docker will hwork on kernal.......so if we did something on kernal it will run on every os and software
+dnf.
+yes..is is possible to work docker on windows ..beacuse its having wsl...but 
+
+but docker only work with linux...internlly its running in the linux only in windows
+Q.. (how do u create windows realed containers..if we are its running in the linux)
+
+
+
+archi:  (bashmetal)
+application
+depemdecsies--------lib bin
+kernal
+hardware
+
+
+
+hypervisor
+
+hypervison
+kernal(optional)..(why means hypervisor having os ntg but independent kernal )
+hardware
+
+vagrent??--used to create a virtual machine
+
+start vm there are snapshots(current situation snap)--like prtable also..we can take this and run int another machine it will run
+
+alwasy conatiner created from image..from one image we can create any number of conatiners.
+
+
+
+docker image------------------------>dokcer conainer 1
+            ------------------------->docker conatiener 2
+
+
+docker images--are readonly
+but when create a container from snapshot..so conatiner we can edit..but snapshot we cant edit it only read only
+
+
+....
+docker version--cleint and server having
+
+server is deman
+cleint used to talk with deman ..like rest apis ..deman will check 
+\
+
+..
+cinatiners always created from image
+...
+
+image -
+    image can be local(when are are creating a conatiner iw till first llok in to local if its not there then it will look outside like (docker hub) and get it) 
+                 remote(0docker hub)
+
+
+if the image is not local it will be not created conatiners
+
+if it in remote then first have to download the image in locally and then create..
+
+
+....
+
+
+deman is responsible to run the conatiner.,....and also check it presnt localy or not images
+
+.......      
+
+doc archi--
+network, image, data volumes, containers
+
+---
+
+docker lifecycle--
+
+from docker file we can create the image
+
+---docker file???
+
+dokcer file having the docker syntax with that we are trying to create the docker image.(its like the pythom code not pythonit follwos the dokcer syntax).
+
+.....
+
+docker run hellow-world(run the contaimer..if image is not there create and run)
+
+docker ps -a(to see)
+
+but it got excuted and exit why
+
+
+
+...
+docker--exited
+linux--exited
+ngnix--not
+
+
+
+
+docker -d run ngix  (-d Detachment)
+
+
+..to get in side the container and run
+docker run -it ubuntu bash  (run will create a new conatiner)
+
+
+--
+docker run ubuntu ps -ef (ps -ef is runing in side the container so only one peorcess)
+
+
+docekr ps--only running
+ps -a --running and stopped also
+
+
+
+
+
+2 vms how to differentiate
+
+cgrops
+1. file system
+2. network like ip port
+3. hostname
+4. users
+5. processes
+6. inter process communication vs rpc
+
+
+kill -9 pid
+
+
+When to Use docker attach?
+✅ To monitor logs in real-time (without running docker logs -f).
+✅ To interact with an application running inside the container.
+✅ To reconnect to a detached interactive session.
+
+ What Does docker commit Do?
+The docker commit command creates a new Docker image from an existing running or stopped container. This allows you to save changes made inside a container and reuse them later.
+
+...
+
+what ever we exectured in machine..it executed as the process
+
+
+
+
+
+
+
+*********
+overlay
+//imp linux cmds
+
+sed
+regular expression
+awk
+grep
+tr
+find
+
+
+
+practice
+
+
+
+docker build -t imagname -f filename .
+docker run -it my-image bash  (the image name we have given)
+
+dokcer tag my-image username/my-image:latest (latest is tag name)
+docker push username/imagename:tag

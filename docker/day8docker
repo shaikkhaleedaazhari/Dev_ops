@@ -1,0 +1,11 @@
+dwam
+
+replica
+it should come on the memory if th e master node then it create  a task (which in in the memory)
+it will check which is the best machine and create A COANTINER..
+
+
+services portss
+
+
+80--internally blocak fro all machines

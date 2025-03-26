@@ -1,0 +1,61 @@
+btrfs--tostore like storagedrivers
+/var/lib/docekr/btrfs 
+
+FROM
+run--at build time
+run has2 formats------["----"],()
+
+cmd -deafult instruction when conatienr starts which can we overridden
+----------
+entrypoint--convert container executable. once u define entrypoint thats only we take..we can override entrypoint also
+----
+copy--
+from local machine..
+
+
+and not that much vunerable to security issues..
+run curl and or wget to reduce the number of layers
+----------
+ADD--
+can download  from remote...like url it will dowald file and untar also.
+
+-------------------------------------------------
+args----varibles
+
+-----
+expose
+------------
+workdir
+-----------------------------
+all the relative path refernce based on work directory... we can define any number of dir but it will refer to latest
+------------------
+maintener
+----------------
+defining who is owner
+
+----------------
+on build
+----------------
+the thing in build it will run first
+---------
+volumes----
+defaulty it will creata anunymus-var/lib/docker/volume/data folder
+----------------
+container-----
+----------------
+
+
+volumes--------
+            --tempfs
+            --bindfiles--not recommened beacuse its in root directroy so any one come and change it.
+            --volumes
+                --Named---are recommened
+                --Anonymus---
+
+networking---
+        bridge
+        host
+        none
+        ipvan
+        macvaln
+        overley

@@ -1,0 +1,92 @@
+-------------------------------------
+
+docker conatiner prune---removed stopped conatiner
+
+cow--copy at runtime.....so dockerun will take care of that it will ccheck--example...conatiner will just dowload the essential
+things in first time when its needed only if not the check
+
+
+1st --stop the conatiner and ----docker stop {id}
+2n --delete it -------------docker rm {id}
+3rd---delete the image ----docker rmi {imageid}
+
+to see images--docker images
+to see the process =---docer ps -a
+
+
+
+docker pull {imae-name}--download image
+
+
+root- directory--/var/lib/docker
+
+overlay2--default storage to store image
+
+we can change also
+
+
+docker --docker rm --just single conatiner
+
+dokcer pull {conatiner name}---to restore the conatiner
+
+
+
+docker image inspect  {name}
+layers in image - 4 layers ---data section having all thw ifo
+
+4--lowerdir, mergedir, upperdir, workdir
+
+conatiner refer to images--this is called cow...
+
+
+
+--------------
+
+
+images are stored in upper and lower dir
+
+
+----
+docker stop {}---------graceful
+docekr kill {}----------forcing
+
+----
+to run and get insdie the conatiner
+
+docker run -it ubuntu bash  (with bash interact)
+
+
+
+docker kill -9 ----it will not stop the process
+
+
+
+exec--create new terminal and connect
+attach---connect to 1st pid
+
+docker pause {} 
+when we start
+docker exec -lt {} bash--eroor will come to unpause---{docker unpause  }
+
+
+
+
+-------
+docker run -it ubuntu bash--create a conatiner and run take us inside and ubuntu is image name it will run in bash in iterateive manner
+
+
+docker exec -it ubuntu bash-----it is used to enter into already existing conatiner
+docker exec → Runs a command inside an existing running container.
+
+
+-
+-----
+to connect with sql
+mysql -u root -p
+
+
+backp--volume
+
+
+if /in front--it consider as bind mound
+not then named vol

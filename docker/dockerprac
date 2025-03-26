@@ -1,0 +1,203 @@
+Docker:
+    Docker is an open-source platform that allows developers to automate the deployment, 
+    scaling, and management of applications using containers.
+
+Docker will work on windows:
+    yes..is is possible to work docker on windows ..beacuse its having wsl.(but internally its working on linux only)
+JNLP
+
+Docker Architecture: (Bash Metal)
+    application
+    dependencies ----> bin bash
+    hardware
+
+Hyper visor (Virtual machine)--(independent)
+    like every time it will load the entire os process
+
+
+vagrent----
+    used to create virtual machine
+
+docker image------------------------>dokcer conainer 1
+            ------------------------->docker conatiener 2
+    docker images--are readonly
+
+var/lib/docker/overlay2---writable laer of image
+
+Docker -version
+    client
+    server
+        client uses rest api to talk with deman noting but server
+
+Containers are ALWAYS created from image
+
+
+image 
+    image can be local(when are are creating a conatiner iw till first llok in to local if its not there then it will look outside like (docker hub) and get it) 
+                 remote(docker hub)
+
+Deamn
+    responsibility is to check if the image is available or not locally if not download from remote
+
+Docker 4 major things-
+    images
+    network
+    data volumes
+    conatiners
+
+Docker lifecycle:
+    dockerfile
+       ----------> image
+                        --------> container
+                                        
+DockerFile:
+        A Dockerfile is a script containing a set of instructions to automate the creation of a Docker image. It defines everything needed to set up a container, including the base operating system, dependencies, application code, and configuration settings.
+
+                A Dockerfile typically consists of the following key instructions:
+
+                                 FROM – Specifies the base image (e.g., python:3.9, ubuntu:20.04).
+                                 WORKDIR – Sets the working directory inside the container.
+                                 COPY – Copies files from the host machine to the container.
+                                 RUN – Executes commands (e.g., installing dependencies).
+                                 CMD or ENTRYPOINT – Defines the command that runs when the container starts.
+                                 EXPOSE – Specifies the port the container listens on.
+                                 ENV – Sets environment variables.
+
+
+HOW to create conatiner:
+
+                    docker run image_name
+                    docker run -lt image-name   (interactive mode with terminal)
+                    docker run -d image-name (detached mode --run conatiner in background)
+            
+            to Create a Container from Your own Image(ntg but from the docker file we created our own image)
+
+                    to create a conatainer first we have to BUILD THE IMAGE
+                            docker build -t myimage -f dockerfilename  . (image is created)(. -- is mandatory it should fetch from the deman)
+                            -t ---- for tag
+                            -f -- for dockerfile name
+
+                            docker run myimage (conatainer is created)
+
+Docker Prune :
+        Remove unused data, including unused images, networks, volumes, and containers.
+
+        docker image prune
+        docker conatiner prune
+        docker volume prune
+        docker network prune
+
+COW
+         allows multiple containers to share the same base image without duplicating it.
+         When a container needs to modify a file from the base image, only the modified part is copied and changed.
+         This reduces storage usage and improves performance.
+
+
+            How COW Works in Docker?
+                        1️ When a container starts, it uses a read-only base image.
+                        2️ If the container modifies a file, Docker copies that file to a writable layer (container layer).
+                        3️ The container works with the copied file, while the original base image remains unchanged.
+                                Example:
+
+                                        Let's say your container is based on ubuntu:20.04.
+                                        If the container runs apt install vim, only the changes (new packages) are stored in the container layer.
+                                        The original Ubuntu image remains untouched.
+
+                              To check which storage driver Docker is using:
+                                    docker info | grep "Storage Driver"
+
+strcuture of deleting:
+
+        1st --stop the conatiner and ----docker stop {id}
+        2n --delete it -------------docker rm {id}
+        3rd---delete the image ----docker rmi {imageid}
+
+
+Some importsnt commands:
+        to see images--docker images
+
+        to see the process =---docer ps -a
+
+        docker pull {imae-name}--download image
+
+        root- directory--/var/lib/docker
+
+        overlay2--default storage to store image
+        
+        docker --docker rm --just single conatiner
+        dokcer pull {conatiner name}---to restore the conatiner
+        docker image inspect  {name}
+        layers in image - 4 layers ---data section having all the ifo
+        4--lowerdir, mergedir, upperdir, workdir
+        conatiner refer to images--this is called cow...
+        images are stored in upper and lower dir
+        docker stop {}---------graceful
+        docekr kill {}----------forcing
+
+
+to run and get insdie the conatiner
+        docker run -it ubuntu bash  (with bash interact)
+
+
+
+docker kill -9 ----it will not stop the process
+
+        exec--create new terminal and connect
+        attach---connect to 1st pid
+
+
+
+
+
+
+-------
+docker run -it ubuntu bash--create a conatiner and run take us inside and ubuntu is image name it will run in bash in iterateive manner
+
+
+docker exec -it ubuntu bash-----it is used to enter into already existing conatiner
+docker exec → Runs a command inside an existing running container.
+
+
+
+to connect with sql
+mysql -u root -p
+
+
+backp--volume
+
+
+if /in front--it consider as bind mound
+not then named vol
+
+
+
+Docker volumes
+------------------
+
+docker volume create my_volume --> create volume
+docker volume ls --> list volume
+docker volume inspect my_volume --> inspect volume
+docker volume rm my_volume --> remove volume
+docker volume prune --> remove all unused volume
+
+docker run -d -v /home/user/data:/app/data ubuntu --> binding volume
+docker run -v my_named_volume:/data ubuntu --> named volume
+docker run -v /data ubuntu --> anonmous volume
+docker run -v my_volume:/app/data:ro ubuntu --> change to read only
+docker run -v my_volume:/app/data:rw ubuntu --> change to read write
+docker run -v my_volume:/app/data:rw ubuntu --> change to read write
+
+
+demo--
+
+from conatinerto image
+
+docker commit -m "message" conatiner id image_name
+
+
+another way to store the image neirther then storage overlay2 and dokcer hub this is another eay
+docker save -o /tmp/mynewimage.tar <image id>-------------------gzip?gunz
+
+
+
+tmpfs

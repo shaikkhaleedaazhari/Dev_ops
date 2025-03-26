@@ -1,0 +1,66 @@
+practice
+
+
+
+
+docker build -t imagname -f filename .------------(creating image form dockerimage)
+docker run -it my-image bash  (the image name we have given)
+or 
+docker run --name my-container -d -p 8080:80 my-custom-image---(creating conatiner from image)--specifi
+
+docker exec -it conatinerid bash/ash
+dokcer tag my-image username/my-image:latest (latest is tag name)
+dokcer login -u username
+docker push username/imagename:tag
+
+
+conatiners
+
+we can create multiconatiners with compose file
+
+
+
+What is a Multi-Stage Build?
+A multi-stage build in Docker is a technique that helps create smaller and more efficient Docker images.
+ Instead of keeping unnecessary files, dependencies, or build tools in the final image, multi-stage builds 
+ use multiple intermediate stages where the application is built, and only the necessary files are copied to the 
+ final runtime stage.
+
+
+ Why Use Multi-Stage Builds?
+Without multi-stage builds:
+
+The final Docker image includes development tools, unnecessary dependencies, and temporary build files, making it large and inefficient.
+
+Large images consume more disk space, increase network transfer time, and slow down deployment.
+
+
+
+
+
+...............
+
+1/bind volume
+2. named
+3. anonymous
+
+when we are giving the named volume to the container, it will be created in the host machine, if we are giving the named volume..
+
+this is one is deafult one in the host machine
+
+cd /var/lib/docker/volumes/
+
+
+---
+anonymous volume we have to spectif destination..so when we check in side the econtainer we cane see that
+if u want to see in the hostmachine then
+cd var/lib/docker/volumes
+
+
+tmpfs
+
+docker run -d --tmpfs /tmp nginx----------(/tmp ..inside the conatienr)
+here the thing is when the conatiner goes down the internal data get deleted.
+
+----------
+

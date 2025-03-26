@@ -1,0 +1,31 @@
+c groups
+cow --copy on write------from layers..low layers fast(run time)
+
+----\create a image from conatiner
+
+
+---
+strcuture of deleting
+----
+
+docker hub --same pointing so same id
+
+
+
+
+
+---------
+path forwarding
+
+docker run -p 80:80 ()1st port is local--not but hosr and another for conatiner
+ ka port hai-------house selling example
+
+
+
+ ---reastart command when it is always
+ when we kill also from external it will automatcally restart
+
+
+------------
+****
+images are layered file system

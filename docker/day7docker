@@ -1,0 +1,16 @@
+compose--like we can build and run----------for conatiners
+        compose file docker filecompose 
+        will take care of creating the image and conatiner also
+    compose means---we have to take compose file and as well as docekr file (if not docekr file we can mention image also)
+    then it will create a image and also create a conatiener.
+
+
+when we are extecting docker compose
+
+it will by deafult create a bridge network all coantiners will atch to that network only.
+
+stack ------------for services---connect to overley2
+
+bridge on a single vm -----------------for services---connect to bridge network
+overley network-----more than one machine in the cluster it will create 1 is ingress 2. is gateway_brige
+ingress

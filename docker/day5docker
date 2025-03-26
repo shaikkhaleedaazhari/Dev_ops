@@ -1,0 +1,59 @@
+
+multi satge build--like multiple froms... the new version will points to the lastest from..like for example it will create a new table and it points to that.ntg but it will create a newa bse layer ..ntg but it will points to the lastest base layer.
+data volumes
+
+
+---
+alpine ---it is so light weigth..its not having bash..it is ash its so light weight.
+
+application should be stateless
+
+
+conatiner failed -----new conatiner---how new conatiner know what old conatiner what its is doing..so we do stateles...means data is stored exteral like database..so new conatiner will know
+
+
+but in all cases it is not true some times we have to store the data in conatiners..like hdfc bank one ..ilegal imegradants.
+
+
+so we are storing how much we have readed in hard disk on the conatiner..and then another conatiner ******
+
+--
+conatiner host
+
+
+DATA __________VOLUMES____________persist the data
+
+
+if example a laptop is there and connected usb to it we are transforing and doing something ..if the laptop is crached also..if we put the usb in another laptop it will have all the data and we can use that
+
+
+so same cenario
+
+if there is conatiner something is happeing and changing the thing we are creating a folder(DATA VOLUMES) outside the conatiner and storing all the things there and this will happen in local host machine..if it vm local vm it will be stores...
+we can attach(mount)      ***********folder and can use this with another conatiner..
+
+----------
+3 types of volumes
+
+1. tempfs (dis and advan is there)---/var/lib/docker/conatiners--stop start in writable layer if it stores all then slow..not used beacuse we not stop and start container..kuberates will resatrt conatiners.. 
+2. bind mount
+3. volumes
+          |
+          -----> Aninymous
+          -----> Named
+
+
+
+-----------------------------------------BIND MOUNT-------------------------------------------------------
+
+ -----------------------docker run -it -v/khaleeda:/khaleeda_con ubuntu bash --------------------------(relative and absolute path)
+
+1st is host machine
+2nd is the pointing to the coantiner 
+
+
+
+in docker file its cmd have only with one parameter --
+thwn it will creata ananlynous volume and bind it to the conatiner.
+
+

@@ -1,0 +1,60 @@
+ip
+etherent card
+etherent cable
+gateway
+nating /dnating
+sudnetting
+
+docker
+docker creta network
+auto docker creaete docker 0()its a switch----ip --172.17.0.1----172.17.255.255-/16 slider
+
+veth--vertual etherent
+
+rout namespcae deafult coonected with docker 0
+
+docke rnwtork 6
+default bridge network
+--host network
+-- none network
+
+..
+
+if we dont metion anything it wil automatical connect to the default bridge nt but dokcer 0
+docker run -it  --name alpine12 alpine ash
+
+docker network create net_name
+
+to create conatiner with using the network
+
+Host network
+
+when we create a conatiner and connect to the host it will connect to connect to host device(like host network only--like localhist)..no need..
+
+docker run -d --net net_name nginx/ubuntu/alpine nathing
+
+
+docker specifying to coonect to host
+
+docker run -d --net host nginx/ubuntu/alpine
+
+NONE::
+
+NONE network --a caontiner attch to null network----we cant talk and we cant do anything 
+    we use this if we dont want to connect to the docker[0] or host network
+    so we use none in the container network
+    we use this with the --net none
+    majority is used in docker with kubernetes
+
+    docker run -d --net none nginx/ubuntu/alpine
+    --------------to talk with another cont ping ip
+
+
+    --docker network coonect  net_name conatiner_name
+
+
+
+    docker run -it  --name alpine12 alpine ash
+
+
+    docker run -it --net my_bridge --name alpine3 alpine ash

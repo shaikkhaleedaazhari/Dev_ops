@@ -1,0 +1,81 @@
+memeory 
+memeory reservation
+memeory swap
+swapiness
+
+
+enable vs start
+
+
+
+layered cachine
+
+
+
+from--define the baselayer of the image.
+run used to execute and creaete alayer-in build time
+
+
+---
+
+to exectute only while starting conatiner
+cmd---------default intructions it will take------for generi purpose
+
+--
+if mulpltile also it will execute tha last one..for savepoint only same -----(qyestion nodody csn chsnge)
+enterypoint----(run time)  covnerts run point  in to executable
+append it will do
+
+defaeult shell is executes
+
+
+
+
+--if in a file
+we gave both cmd and savepoint
+it will exceute a savepoint only ..cmd will be a parameter
+
+
+
+............
+
+env varaible
+env comand is there
+
+
+-----
+copyting
+copy --only local
+add--from local or not there can dowload from exteral also like interent
+
+--hot to change link
+
+---
+
+------
+ubuntu
+java
+tomcat
+
+
+---------
+more frequent make them down placed when run is having 
+
+---
+docker run -d -p 8080:8080 tom
+we are porvoding to extral
+1st 8080 is our host
+we have to give image name at last only
+----
+the ls target/
+copy and paste in localhost
+-------
+context from where we copy
+-----
+
+dockerfiles...multi stage---example
+
+
+--
+realtive --.
+abosulte path
